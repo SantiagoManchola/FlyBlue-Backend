@@ -10,7 +10,7 @@ router = APIRouter(
     tags=["auth"]
 )
 
-@router.post("/registro")
+@router.post("/register")
 def registrar_usuario(usuario: UsuarioCreate, db: Session = Depends(get_db)):
     # 1. Validar si el correo ya existe
     existente = db.query(Usuario).filter(Usuario.correo == usuario.correo).first()
@@ -23,7 +23,7 @@ def registrar_usuario(usuario: UsuarioCreate, db: Session = Depends(get_db)):
         nombre=usuario.nombre,
         correo=usuario.correo,
         contraseña=hashed_password,
-        rol=usuario.rol
+        rol="usuario"
     )
 
     # 3. Guardar en la base de datos

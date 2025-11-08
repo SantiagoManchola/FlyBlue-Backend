@@ -77,10 +77,9 @@ class Equipaje(Base):
     id_equipaje = Column(Integer, primary_key=True, index=True)
     tipo = Column(String(20), nullable=False)
     precio = Column(DECIMAL(10, 2), nullable=False)
-
-    __table_args__ = (
-        CheckConstraint("tipo IN ('Pequeño', 'Mediano', 'Grande')"),
-    )
+    descripcion = Column(String(20), nullable=False)
+    peso_maximo = Column(Integer, nullable=False)
+    
 
     reservas = relationship("Reserva", back_populates="equipaje")
 

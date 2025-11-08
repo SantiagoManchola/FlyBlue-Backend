@@ -60,7 +60,7 @@ def obtener_reservas(id_usuario: int, db: Session = Depends(get_db)):
         vuelo = db.query(Vuelo).filter(Vuelo.id_vuelo == r.id_vuelo).first()
         origen = db.query(Ciudad).filter(Ciudad.id_ciudad == vuelo.id_origen).first()
         destino = db.query(Ciudad).filter(Ciudad.id_ciudad == vuelo.id_destino).first()
-        vuelo_str = f"{origen.nombre}-{destino.nombre}-{vuelo.fecha_salida.strftime('%Y-%m-%d %H:%M')}"
+        vuelo_str = f"{origen.codigo}-{destino.codigo}-{vuelo.fecha_salida.strftime('%Y-%m-%d %H:%M')}"
         reservas.append(
             ReservaResponse(
                 id_reserva=r.id_reserva,
@@ -74,7 +74,7 @@ def obtener_reservas(id_usuario: int, db: Session = Depends(get_db)):
 
 from datetime import datetime
 
-@router.post("/v1/cliente/reservas/{reserva_id}/pago")
+@router.post("/reservas/{reserva_id}/pago")
 def procesar_pago(reserva_id: int, db: Session = Depends(get_db)):
     reserva = db.query(Reserva).filter(Reserva.id_reserva == reserva_id).first()
     if not reserva:

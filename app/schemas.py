@@ -35,6 +35,8 @@ class EquipajeResponse(BaseModel):
     id_equipaje: int
     tipo: str
     precio: float
+    descripcion: str
+    peso_maximo: int
    
 
     model_config = {"from_attributes": True}
@@ -65,7 +67,7 @@ class UsuarioCreate(UsuarioBase):
     nombre: str
     correo: EmailStr
     contraseña: str
-    rol: str
+   
 
 class UsuarioResponse(UsuarioBase):
     id_usuario: int
@@ -107,9 +109,10 @@ class CiudadCreate(BaseModel):
 class EquipajeCreate(BaseModel):
     tipo: str
     precio: float
+    descripcion: str
+    peso_maximo: int
 
 class VueloCreate(BaseModel):
-    codigo: str
     id_origen: int
     id_destino: int
     fecha_salida: datetime

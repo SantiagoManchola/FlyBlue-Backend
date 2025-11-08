@@ -12,7 +12,7 @@ router = APIRouter(
     tags=["admin"]
 )
 
-@router.post("/admin/ciudades")
+@router.post("/ciudades")
 def crear_ciudad(ciudad: CiudadCreate, id_usuario: int, db: Session = Depends(get_db)):
     # 1️⃣ Verificar que el usuario exista y sea admin
     usuario = db.query(Usuario).filter(Usuario.id_usuario == id_usuario).first()
@@ -37,7 +37,7 @@ def crear_ciudad(ciudad: CiudadCreate, id_usuario: int, db: Session = Depends(ge
         "codigo": nueva_ciudad.codigo
     }
 
-@router.post("/admin/equipajes")
+@router.post("/equipajes")
 def crear_equipaje(equipaje: EquipajeCreate, id_usuario: int, db: Session = Depends(get_db)):
     # Verificar admin
     usuario = db.query(Usuario).filter(Usuario.id_usuario == id_usuario).first()
@@ -47,7 +47,7 @@ def crear_equipaje(equipaje: EquipajeCreate, id_usuario: int, db: Session = Depe
         raise HTTPException(status_code=403, detail="No tienes permisos de administrador")
 
     # Crear equipaje
-    nuevo_equipaje = Equipaje(tipo=equipaje.tipo, precio=equipaje.precio)
+    nuevo_equipaje = Equipaje(tipo=equipaje.tipo, precio=equipaje.precio, descripcion=equipaje.descripcion, peso_maximo=equipaje.peso_maximo)
     db.add(nuevo_equipaje)
     db.commit()
     db.refresh(nuevo_equipaje)
@@ -56,12 +56,13 @@ def crear_equipaje(equipaje: EquipajeCreate, id_usuario: int, db: Session = Depe
         "message": "Equipaje creado exitosamente",
         "id_equipaje": nuevo_equipaje.id_equipaje,
         "tipo": nuevo_equipaje.tipo,
-        "precio": float(nuevo_equipaje.precio)
+        "descripcion": nuevo_equipaje.descripcion,
+        "peso_maximo": nuevo_equipaje.peso_maximo,
+        "precio": float(nuevo_equipaje.precio),
     }
 
-@router.post("/admin/vuelos")
-def crear_vuelo(id_usuario: int, id_origen: int, id_destino: int, fecha_salida: datetime,
-                 fecha_llegada: datetime, precio_base: float, db: Session = Depends(get_db)):
+@router.post("/vuelos")
+def crear_vuelo(id_usuario: int, vuelo: VueloCreate, db: Session = Depends(get_db)):
     # Verificar admin
     usuario = db.query(Usuario).filter(Usuario.id_usuario == id_usuario).first()
     if not usuario:
@@ -70,22 +71,22 @@ def crear_vuelo(id_usuario: int, id_origen: int, id_destino: int, fecha_salida: 
         raise HTTPException(status_code=403, detail="No tienes permisos de administrador")
 
     # Obtener ciudades
-    ciudad_origen = db.query(Ciudad).filter(Ciudad.id_ciudad == id_origen).first()
-    ciudad_destino = db.query(Ciudad).filter(Ciudad.id_ciudad == id_destino).first()
+    ciudad_origen = db.query(Ciudad).filter(Ciudad.id_ciudad == vuelo.id_origen).first()
+    ciudad_destino = db.query(Ciudad).filter(Ciudad.id_ciudad == vuelo.id_destino).first()
     if not ciudad_origen or not ciudad_destino:
         raise HTTPException(status_code=404, detail="Ciudad de origen o destino no encontrada")
 
     # Generar código automáticamente
-    codigo = f"{ciudad_origen.codigo}-{ciudad_destino.codigo}-{fecha_salida.strftime('%Y%m%d')}"
+    codigo = f"{ciudad_origen.codigo}-{ciudad_destino.codigo}-{vuelo.fecha_salida.strftime('%Y%m%d')}"
 
     # Crear vuelo
     nuevo_vuelo = Vuelo(
         codigo=codigo,
-        id_origen=id_origen,
-        id_destino=id_destino,
-        fecha_salida=fecha_salida,
-        fecha_llegada=fecha_llegada,
-        precio_base=precio_base
+        id_origen=vuelo.id_origen,
+        id_destino=vuelo.id_destino,
+        fecha_salida=vuelo.fecha_salida,
+        fecha_llegada=vuelo.fecha_llegada,
+        precio_base=vuelo.precio_base
     )
     db.add(nuevo_vuelo)
     db.commit()

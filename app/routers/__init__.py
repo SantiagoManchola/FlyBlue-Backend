@@ -44,7 +44,7 @@ def obtener_vuelo_por_id(id_vuelo: int, db: Session = Depends(get_db)):
 def obtener_asientos_por_id_vuelo(id_vuelo: int, db: Session = Depends(get_db)):
     vuelo = db.query(Vuelo).filter(Vuelo.id_vuelo == id_vuelo).first()
     if not vuelo:
-        return {"error": "Vuelo no encontrado"}
+        raise HTTPException(status_code=404, detail="Vuelo no encontrado")
     
     asientos = db.query(Asiento).filter(Asiento.id_vuelo == id_vuelo).all()
     return AsientosResponse(asientos=asientos)
@@ -54,7 +54,7 @@ def obtener_asientos_por_id_vuelo(id_vuelo: int, db: Session = Depends(get_db)):
 def obtener_equipajes(db: Session = Depends(get_db)):
     equipaje = db.query(Equipaje).all()
     if not equipaje:
-        return {"error": "Equipaje no encontrado"}
+        raise HTTPException(status_code=404, detail="Equipaje no encontrado")
     
     return equipaje
 
@@ -62,7 +62,7 @@ def obtener_equipajes(db: Session = Depends(get_db)):
 def obtener_ciudades(db: Session = Depends(get_db)):
     ciudades = db.query(Ciudad).all()
     if not ciudades:
-        return {"error": "Equipaje no encontrado"}
+        raise HTTPException(status_code=404, detail="No se encontraron ciudades")
     
     return ciudades
 
