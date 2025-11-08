@@ -84,9 +84,10 @@ class LoginResponse(BaseModel):
     nombre: str
     correo: str
     rol: str
+    access_token: str
+    token_type: str = "bearer"
 
 class ReservaRequest(BaseModel):
-    
     id_usuario: int
     id_vuelo: int
     id_asiento: int

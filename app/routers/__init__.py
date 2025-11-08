@@ -5,6 +5,7 @@ from sqlalchemy.orm import Session
 from app.database import SessionLocal, get_db
 from app.models import *
 from app.schemas import *
+from app.security import require_user
 
 
 api_v1 = APIRouter(prefix="/v1")
@@ -17,7 +18,7 @@ api_v1.include_router(auth.router)
 #Paths
 
 @api_v1.get("/vuelos/{id_vuelo}")
-def obtener_vuelo_por_id(id_vuelo: int, db: Session = Depends(get_db)):
+def obtener_vuelo_por_id(id_vuelo: int, db: Session = Depends(get_db), current_user: Usuario = Depends(require_user)):
     vuelo = db.query(Vuelo).filter(Vuelo.id_vuelo == id_vuelo).first()
     if not vuelo:
         raise HTTPException(status_code=404, detail="Vuelo no encontrado")
@@ -41,7 +42,7 @@ def obtener_vuelo_por_id(id_vuelo: int, db: Session = Depends(get_db)):
     )
 
 @api_v1.get("/{id_vuelo}/asientos",response_model=AsientosResponse)
-def obtener_asientos_por_id_vuelo(id_vuelo: int, db: Session = Depends(get_db)):
+def obtener_asientos_por_id_vuelo(id_vuelo: int, db: Session = Depends(get_db), current_user: Usuario = Depends(require_user)):
     vuelo = db.query(Vuelo).filter(Vuelo.id_vuelo == id_vuelo).first()
     if not vuelo:
         raise HTTPException(status_code=404, detail="Vuelo no encontrado")
@@ -51,7 +52,7 @@ def obtener_asientos_por_id_vuelo(id_vuelo: int, db: Session = Depends(get_db)):
 
 
 @api_v1.get("/equipajes",response_model=list[EquipajeResponse])
-def obtener_equipajes(db: Session = Depends(get_db)):
+def obtener_equipajes(db: Session = Depends(get_db), current_user: Usuario = Depends(require_user)):
     equipaje = db.query(Equipaje).all()
     if not equipaje:
         raise HTTPException(status_code=404, detail="Equipaje no encontrado")
@@ -59,7 +60,7 @@ def obtener_equipajes(db: Session = Depends(get_db)):
     return equipaje
 
 @api_v1.get("/ciudades",response_model=list[CiudadResponse])
-def obtener_ciudades(db: Session = Depends(get_db)):
+def obtener_ciudades(db: Session = Depends(get_db), current_user: Usuario = Depends(require_user)):
     ciudades = db.query(Ciudad).all()
     if not ciudades:
         raise HTTPException(status_code=404, detail="No se encontraron ciudades")
@@ -71,7 +72,8 @@ def buscar_vuelos(
     origen: int = Query(..., description="ID de la ciudad de origen"),
     destino: int = Query(..., description="ID de la ciudad de destino"),
     fecha: datetime = Query(..., description="Fecha de salida (YYYY-MM-DD)"),
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user: Usuario = Depends(require_user)
 ):
     # Filtrar vuelos que coincidan con origen, destino y fecha (solo el día)
     vuelos = (

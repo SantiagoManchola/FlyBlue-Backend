@@ -1,11 +1,13 @@
 from fastapi import FastAPI, Depends, HTTPException, Request
 from sqlalchemy.orm import Session
-from app.database import SessionLocal, get_db
+from app.database import SessionLocal, get_db, create_tables
 from app.models import *
 from app.routers import api_v1
 #from app.schemas 
 import time
 
+# Crear tablas al iniciar la aplicación
+create_tables()
 
 app = FastAPI(
     title="API Sistema de Vuelos",
