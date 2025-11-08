@@ -2,7 +2,9 @@ from fastapi import APIRouter, HTTPException, Depends
 from app.database import get_db
 from app.schemas import ReservaRequest,ReservaResponse,UsuarioResponse
 from app.models import *
+from app.security import require_user
 from sqlalchemy.orm import Session
+from datetime import datetime
 
 router = APIRouter(
     prefix="/cliente",
@@ -10,7 +12,7 @@ router = APIRouter(
 )
 
 @router.post("/reservas")
-def crear_reserva(reserva: ReservaRequest, db: Session = Depends(get_db)):
+def crear_reserva(reserva: ReservaRequest, db: Session = Depends(get_db), current_user: Usuario = Depends(require_user)):
     # Buscar vuelo
     vuelo = db.query(Vuelo).filter(Vuelo.id_vuelo == reserva.id_vuelo).first()
     if not vuelo:
@@ -29,6 +31,10 @@ def crear_reserva(reserva: ReservaRequest, db: Session = Depends(get_db)):
     # Calcular total
     total = float(vuelo.precio_base) + float(equipaje.precio)
 
+    # Verificar que el usuario solo pueda crear reservas para sí mismo
+    if current_user.rol != "admin" and current_user.id_usuario != reserva.id_usuario:
+        raise HTTPException(status_code=403, detail="No puedes crear reservas para otro usuario")
+    
     # Crear reserva
     nueva_reserva = Reserva(
         id_usuario=reserva.id_usuario,
@@ -49,7 +55,11 @@ def crear_reserva(reserva: ReservaRequest, db: Session = Depends(get_db)):
     return {"message": "reserva creada exitosamente", "id_reserva": nueva_reserva.id_reserva}
 
 @router.get("/reservas/{id_usuario}", response_model=list[ReservaResponse])
-def obtener_reservas(id_usuario: int, db: Session = Depends(get_db)):
+def obtener_reservas(id_usuario: int, db: Session = Depends(get_db), current_user: Usuario = Depends(require_user)):
+    # Verificar que el usuario solo pueda ver sus propias reservas
+    if current_user.rol != "admin" and current_user.id_usuario != id_usuario:
+        raise HTTPException(status_code=403, detail="No puedes ver reservas de otro usuario")
+    
     reservas_db = db.query(Reserva).filter(Reserva.id_usuario == id_usuario).all()
 
     if not reservas_db:
@@ -72,13 +82,14 @@ def obtener_reservas(id_usuario: int, db: Session = Depends(get_db)):
 
     return reservas
 
-from datetime import datetime
-
 @router.post("/reservas/{reserva_id}/pago")
-def procesar_pago(reserva_id: int, db: Session = Depends(get_db)):
-    reserva = db.query(Reserva).filter(Reserva.id_reserva == reserva_id).first()
+def procesar_pago(reserva_id: int, db: Session = Depends(get_db), current_user: Usuario = Depends(require_user)):
+    reserva = db.query(Reserva).filter(
+        Reserva.id_reserva == reserva_id,
+        Reserva.id_usuario == current_user.id_usuario
+    ).first()
     if not reserva:
-        raise HTTPException(status_code=404, detail="Reserva no encontrada")
+        raise HTTPException(status_code=404, detail="Reserva no encontrada o no pertenece al usuario")
 
     # Verificar si ya existe un pago
     if reserva.pago:

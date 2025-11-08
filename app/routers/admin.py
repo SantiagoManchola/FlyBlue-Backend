@@ -1,10 +1,9 @@
-from fastapi import APIRouter
-from fastapi import APIRouter, Query
-from fastapi import FastAPI, Depends, HTTPException, Request
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from app.database import SessionLocal, get_db
+from app.database import get_db
 from app.models import Ciudad, Usuario, Equipaje, Vuelo
 from app.schemas import CiudadCreate, EquipajeCreate, VueloCreate
+from app.security import require_admin
 from datetime import datetime
 
 router = APIRouter(
@@ -13,13 +12,7 @@ router = APIRouter(
 )
 
 @router.post("/ciudades")
-def crear_ciudad(ciudad: CiudadCreate, id_usuario: int, db: Session = Depends(get_db)):
-    # 1️⃣ Verificar que el usuario exista y sea admin
-    usuario = db.query(Usuario).filter(Usuario.id_usuario == id_usuario).first()
-    if not usuario:
-        raise HTTPException(status_code=404, detail="Usuario no encontrado")
-    if usuario.rol != "admin":
-        raise HTTPException(status_code=403, detail="No tienes permisos de administrador")
+def crear_ciudad(ciudad: CiudadCreate, db: Session = Depends(get_db), current_user: Usuario = Depends(require_admin)):
 
     # 2️⃣ Crear la ciudad
     nueva_ciudad = Ciudad(
@@ -38,13 +31,7 @@ def crear_ciudad(ciudad: CiudadCreate, id_usuario: int, db: Session = Depends(ge
     }
 
 @router.post("/equipajes")
-def crear_equipaje(equipaje: EquipajeCreate, id_usuario: int, db: Session = Depends(get_db)):
-    # Verificar admin
-    usuario = db.query(Usuario).filter(Usuario.id_usuario == id_usuario).first()
-    if not usuario:
-        raise HTTPException(status_code=404, detail="Usuario no encontrado")
-    if usuario.rol != "admin":
-        raise HTTPException(status_code=403, detail="No tienes permisos de administrador")
+def crear_equipaje(equipaje: EquipajeCreate, db: Session = Depends(get_db), current_user: Usuario = Depends(require_admin)):
 
     # Crear equipaje
     nuevo_equipaje = Equipaje(tipo=equipaje.tipo, precio=equipaje.precio, descripcion=equipaje.descripcion, peso_maximo=equipaje.peso_maximo)
@@ -62,13 +49,7 @@ def crear_equipaje(equipaje: EquipajeCreate, id_usuario: int, db: Session = Depe
     }
 
 @router.post("/vuelos")
-def crear_vuelo(id_usuario: int, vuelo: VueloCreate, db: Session = Depends(get_db)):
-    # Verificar admin
-    usuario = db.query(Usuario).filter(Usuario.id_usuario == id_usuario).first()
-    if not usuario:
-        raise HTTPException(status_code=404, detail="Usuario no encontrado")
-    if usuario.rol != "admin":
-        raise HTTPException(status_code=403, detail="No tienes permisos de administrador")
+def crear_vuelo(vuelo: VueloCreate, db: Session = Depends(get_db), current_user: Usuario = Depends(require_admin)):
 
     # Obtener ciudades
     ciudad_origen = db.query(Ciudad).filter(Ciudad.id_ciudad == vuelo.id_origen).first()
