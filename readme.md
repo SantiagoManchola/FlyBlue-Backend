@@ -1,0 +1,1 @@
+Revisar lo de asientos disponibles y totales en la base de datos

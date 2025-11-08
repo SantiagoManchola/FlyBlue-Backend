@@ -1,96 +1,120 @@
-from sqlalchemy import Column, Integer, String, Boolean, DateTime, DECIMAL, ForeignKey
+from sqlalchemy import (Column,Integer,String,Boolean,DateTime,DECIMAL,ForeignKey,CheckConstraint)
 from sqlalchemy.orm import relationship
-from database import Base  # Importa tu Base declarativa (de database.py)
+from app.database import Base
 
+
+# 1️⃣ USUARIO
 class Usuario(Base):
-    __tablename__ = "usuarios"
+    __tablename__ = "usuario"
 
     id_usuario = Column(Integer, primary_key=True, index=True)
-    nombre = Column(String, nullable=False)
-    correo = Column(String, unique=True, nullable=False)
-    contraseña = Column(String, nullable=False)
-    rol = Column(String, nullable=False)  # 'usuario' o 'admin'
+    nombre = Column(String(100), nullable=False)
+    correo = Column(String(100), unique=True, nullable=False)
+    contraseña = Column(String(255), nullable=False)
+    rol = Column(String(20), nullable=False)
 
-    reservas = relationship("Reserva", back_populates="usuario")
+    __table_args__ = (
+        CheckConstraint("rol IN ('usuario', 'admin')"),
+    )
+
+    reservas = relationship("Reserva", back_populates="usuario", cascade="all, delete")
 
 
+# 2️⃣ CIUDAD
 class Ciudad(Base):
-    __tablename__ = "ciudades"
+    __tablename__ = "ciudad"
 
     id_ciudad = Column(Integer, primary_key=True, index=True)
-    nombre = Column(String, nullable=False)
-    codigo = Column(String, nullable=False)
+    nombre = Column(String(100), nullable=False)
+    codigo = Column(String(10), nullable=False)
 
-    vuelos_origen = relationship("Vuelo", back_populates="origen", foreign_keys="Vuelo.id_origen")
-    vuelos_destino = relationship("Vuelo", back_populates="destino", foreign_keys="Vuelo.id_destino")
+    vuelos_origen = relationship("Vuelo", foreign_keys="Vuelo.id_origen", back_populates="origen")
+    vuelos_destino = relationship("Vuelo", foreign_keys="Vuelo.id_destino", back_populates="destino")
 
 
+# 3️⃣ VUELO
 class Vuelo(Base):
-    __tablename__ = "vuelos"
+    __tablename__ = "vuelo"
 
     id_vuelo = Column(Integer, primary_key=True, index=True)
-    codigo = Column(String, nullable=False)
-    id_origen = Column(Integer, ForeignKey("ciudades.id_ciudad"))
-    id_destino = Column(Integer, ForeignKey("ciudades.id_ciudad"))
+    codigo = Column(String(20), nullable=False)
+    id_origen = Column(Integer, ForeignKey("ciudad.id_ciudad", ondelete="CASCADE"), nullable=False)
+    id_destino = Column(Integer, ForeignKey("ciudad.id_ciudad", ondelete="CASCADE"), nullable=False)
     fecha_salida = Column(DateTime, nullable=False)
     fecha_llegada = Column(DateTime, nullable=False)
     precio_base = Column(DECIMAL(10, 2), nullable=False)
-    asientos_totales = Column(Integer, nullable=False)
-    asientos_disponibles = Column(Integer, nullable=False)
+    asientos_totales = Column(Integer, nullable=True)
+    asientos_disponibles = Column(Integer, nullable=True)
 
     origen = relationship("Ciudad", foreign_keys=[id_origen], back_populates="vuelos_origen")
     destino = relationship("Ciudad", foreign_keys=[id_destino], back_populates="vuelos_destino")
-    asientos = relationship("Asiento", back_populates="vuelo")
-    reservas = relationship("Reserva", back_populates="vuelo")
+    asientos = relationship("Asiento", back_populates="vuelo", cascade="all, delete")
+    reservas = relationship("Reserva", back_populates="vuelo", cascade="all, delete")
 
 
+# 4️⃣ ASIENTO
 class Asiento(Base):
-    __tablename__ = "asientos"
+    __tablename__ = "asiento"
 
     id_asiento = Column(Integer, primary_key=True, index=True)
-    id_vuelo = Column(Integer, ForeignKey("vuelos.id_vuelo"))
+    id_vuelo = Column(Integer, ForeignKey("vuelo.id_vuelo", ondelete="CASCADE"), nullable=False)
     fila = Column(Integer, nullable=False)
-    columna = Column(String, nullable=False)
+    columna = Column(String(1), nullable=False)
     disponible = Column(Boolean, default=True)
 
+    __table_args__ = (
+        CheckConstraint("columna IN ('A', 'B', 'C', 'D', 'E')"),
+    )
+
     vuelo = relationship("Vuelo", back_populates="asientos")
-    reserva = relationship("Reserva", back_populates="asiento", uselist=False)
+    reservas = relationship("Reserva", back_populates="asiento")
 
 
+# 5️⃣ EQUIPAJE
 class Equipaje(Base):
-    __tablename__ = "equipajes"
+    __tablename__ = "equipaje"
 
     id_equipaje = Column(Integer, primary_key=True, index=True)
-    tipo = Column(String, nullable=False)  # Pequeño, Mediano, Grande
+    tipo = Column(String(20), nullable=False)
     precio = Column(DECIMAL(10, 2), nullable=False)
+
+    __table_args__ = (
+        CheckConstraint("tipo IN ('Pequeño', 'Mediano', 'Grande')"),
+    )
 
     reservas = relationship("Reserva", back_populates="equipaje")
 
 
+# 6️⃣ RESERVA
 class Reserva(Base):
-    __tablename__ = "reservas"
+    __tablename__ = "reserva"
 
     id_reserva = Column(Integer, primary_key=True, index=True)
-    id_usuario = Column(Integer, ForeignKey("usuarios.id_usuario"))
-    id_vuelo = Column(Integer, ForeignKey("vuelos.id_vuelo"))
-    id_asiento = Column(Integer, ForeignKey("asientos.id_asiento"))
-    id_equipaje = Column(Integer, ForeignKey("equipajes.id_equipaje"))
+    id_usuario = Column(Integer, ForeignKey("usuario.id_usuario", ondelete="CASCADE"), nullable=False)
+    id_vuelo = Column(Integer, ForeignKey("vuelo.id_vuelo", ondelete="CASCADE"), nullable=False)
+    id_asiento = Column(Integer, ForeignKey("asiento.id_asiento", ondelete="SET NULL"))
+    id_equipaje = Column(Integer, ForeignKey("equipaje.id_equipaje"))
     total = Column(DECIMAL(10, 2), nullable=False)
 
     usuario = relationship("Usuario", back_populates="reservas")
     vuelo = relationship("Vuelo", back_populates="reservas")
-    asiento = relationship("Asiento", back_populates="reserva")
+    asiento = relationship("Asiento", back_populates="reservas")
     equipaje = relationship("Equipaje", back_populates="reservas")
-    pago = relationship("Pago", back_populates="reserva", uselist=False)
+    pago = relationship("Pago", back_populates="reserva", cascade="all, delete", uselist=False)
 
 
+# 7️⃣ PAGO
 class Pago(Base):
-    __tablename__ = "pagos"
+    __tablename__ = "pago"
 
     id_pago = Column(Integer, primary_key=True, index=True)
-    id_reserva = Column(Integer, ForeignKey("reservas.id_reserva"))
+    id_reserva = Column(Integer, ForeignKey("reserva.id_reserva", ondelete="CASCADE"), nullable=False)
     monto = Column(DECIMAL(10, 2), nullable=False)
-    estado = Column(String, nullable=False)  # pagado, fallido
-    fecha = Column(DateTime, nullable=False)
+    estado = Column(String(20), nullable=False)
+    fecha = Column(DateTime)
+
+    __table_args__ = (
+        CheckConstraint("estado IN ('pagado', 'fallido')"),
+    )
 
     reserva = relationship("Reserva", back_populates="pago")
