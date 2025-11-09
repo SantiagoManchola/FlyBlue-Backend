@@ -41,7 +41,7 @@ def obtener_vuelo_por_id(id_vuelo: int, db: Session = Depends(get_db), current_u
         asientos_disponibles=asientos_disponibles,
     )
 
-@api_v1.get("/{id_vuelo}/asientos",response_model=AsientosResponse)
+@api_v1.get("/vuelos/{id_vuelo}/asientos",response_model=AsientosResponse)
 def obtener_asientos_por_id_vuelo(id_vuelo: int, db: Session = Depends(get_db), current_user: Usuario = Depends(require_user)):
     vuelo = db.query(Vuelo).filter(Vuelo.id_vuelo == id_vuelo).first()
     if not vuelo:
