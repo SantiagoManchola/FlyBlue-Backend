@@ -1,4 +1,3 @@
-# app/routers/auth.py
 from fastapi import APIRouter, HTTPException, Depends
 from app.database import get_db
 from app.utils.security import verify_password

@@ -1,4 +1,3 @@
-# app/main.py
 from fastapi import FastAPI
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.database import engine
@@ -30,4 +29,4 @@ app.include_router(api_v1)
 
 @app.get("/")
 def read_root():
-    return {"mensaje": "API de FlyBlue está activa"}
+    return {"mensaje": "API de FlyBlue está activa", "status": "200"}

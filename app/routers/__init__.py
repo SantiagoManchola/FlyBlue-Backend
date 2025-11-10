@@ -1,4 +1,3 @@
-# app/routers/__init__.py
 from fastapi import APIRouter, Query, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.database import get_db
