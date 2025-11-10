@@ -32,7 +32,7 @@ stages:
               containerRegistry: $(dockerRegistryServiceConnection)
               tags: |
                 $(tag) 
-                $(Build.SourceBranchName) # <-- Etiqueta con el nombre de la rama (ej: "develop", "test", "main")
+                $(Build.SourceBranchName) 
                 
           - task: PublishBuildArtifacts@1
             displayName: 'Publish Build Info'
