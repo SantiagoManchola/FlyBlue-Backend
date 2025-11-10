@@ -1,20 +1,20 @@
 trigger:
   branches:
     include:
-      - develop 
-      - test    
-      - main    
+      - develop # Rama para Dev
+      - test    # Rama para Test
+      - main    # Rama para Prod
 
 pool:
   vmImage: 'ubuntu-latest'
 
 variables:
-  
+  # Uso de la Service Connection de Docker que creada para Dev
   dockerRegistryServiceConnection: 'SC-DR-FLYBLUE-DEV'
-  imageRepository: 'daldeoscoder/flyblue-api' 
+  imageRepository: 'daldeoscoder/flyblue-api' # repo en Docker Hub
   containerRegistry: 'index.docker.io'
   dockerfilePath: '**/Dockerfile'
-  tag: '$(Build.BuildId)' 
+  tag: '$(Build.BuildId)' # Tag único (ej: 1234)
 
 stages:
   - stage: Build
