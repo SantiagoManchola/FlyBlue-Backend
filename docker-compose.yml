@@ -13,18 +13,23 @@ services:
       - "${POSTGRES_PORT}:5432"
 
   web:
+    # --- CAMBIO IMPORTANTE ---
+    # En lugar de "image: ...", usamos "build: ."
+    # Esto le dice a Docker que construya la imagen desde tu Dockerfile local.
     build: .
     container_name: api_app
     depends_on:
       - db
     environment:
-      DATABASE_URL: ${DATABASE_URL}
+      # --- CAMBIO IMPORTANTE ---
+      # La URL debe usar "postgresql+asyncpg" para tu código asíncrono
+      DATABASE_URL: "postgresql+asyncpg://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}"
       JWT_SECRET_KEY: ${JWT_SECRET_KEY}
     ports:
       - "8000:8000"
     volumes:
-      - .:/code
-    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+      - .:/code # Mapea tu código para --reload (si tu Dockerfile usa /code)
+                # [cite_start]Si tu Dockerfile usa /app [cite: 53-55], cambia esto a: - .:/app
 
 volumes:
   pgdata:
