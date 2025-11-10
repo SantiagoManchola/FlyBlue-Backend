@@ -9,8 +9,23 @@ from app import crud
 security = HTTPBearer()
 
 async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(security), db: AsyncSession = Depends(get_db)):
-    user_id = verify_token(credentials.credentials)
-    user = await crud.get_user_by_id(db, user_id=user_id) # Usamos crud async
+    
+    # 1. user_id_str ES UN STRING (ej: "1")
+    user_id_str = verify_token(credentials.credentials)
+    
+    try:
+        # 2. Convertir el ID a entero
+        user_id_int = int(user_id_str)
+    except ValueError:
+        # Si el token tiene un 'sub' que no es un número
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Token inválido (ID de usuario no válido)"
+        )
+
+    # 3. Pasamos el ID entero a la función del CRUD
+    user = await crud.get_user_by_id(db, user_id=user_id_int)
+    
     if not user:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
