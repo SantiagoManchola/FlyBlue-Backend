@@ -4,7 +4,35 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6b7a8ac3-9db8-49e9-b0df-67a097e4bb70" name="Changes" comment="" />
+    <list default="true" id="6b7a8ac3-9db8-49e9-b0df-67a097e4bb70" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/../../../../MachineLearning/ProyectoFinal/EFIpynb/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../MachineLearning/ProyectoFinal/EFIpynb/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../MachineLearning/SegundaEntrega/segunda_entrega_IA/segunda_entrega_IA.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../MachineLearning/dirty_cafe_sales.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../MachineLearning/us-shein-appliances-3987.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../MachineLearning/us-shein-automotive-4110.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../MachineLearning/us-shein-baby_and_maternity-4433.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../MachineLearning/us-shein-bags_and_luggage-4299.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../MachineLearning/us-shein-beauty_and_health-4267.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../MachineLearning/us-shein-curve-2849.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../MachineLearning/us-shein-electronics-4395.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../MachineLearning/us-shein-home_and_kitchen-3719.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../MachineLearning/us-shein-home_textile-3883.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../MachineLearning/us-shein-jewelry_and_accessories-3548.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../MachineLearning/us-shein-kids-4314.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../MachineLearning/us-shein-mens_clothes-1891.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../MachineLearning/us-shein-office_and_school_supplies-4233.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../MachineLearning/us-shein-pet_supplies-4083.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../MachineLearning/us-shein-shoes-4381.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../MachineLearning/us-shein-sports_and_outdoors-3853.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../MachineLearning/us-shein-swimwear-3761.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../MachineLearning/us-shein-tools_and_home_improvement-3903.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../MachineLearning/us-shein-toys_and_games-3577.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../MachineLearning/us-shein-underwear_and_sleepwear-4019.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../MachineLearning/us-shein-womens_clothing-4620.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -13,48 +41,48 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../../../.." />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "Prado500"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;Prado500&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/Prado500/repoSemestre.git",
-    "accountId": "a372e701-d31b-4d16-ac35-596ca78a6ce9"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Prado500/repoSemestre.git&quot;,
+    &quot;accountId&quot;: &quot;a372e701-d31b-4d16-ac35-596ca78a6ce9&quot;
   }
-}]]></component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 6
-}]]></component>
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 6
+}</component>
   <component name="ProjectId" id="35HAeOhgytT0asgiA7q9a4LZxzp" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultAutoModeForALLUsers.v1": "true",
-    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "dart.analysis.tool.window.visible": "false",
-    "git-widget-placeholder": "main",
-    "junie.onboarding.icon.badge.shown": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/Alejandro/Documents/Universidades/Unibague/Semestres/2025B/repoSemestre/tareas/talleres_devops/taller_devops_03/repoBlueFly",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "show.migrate.to.gradle.popup": "false",
-    "to.speed.mode.migration.done": "true",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultAutoModeForALLUsers.v1&quot;: &quot;true&quot;,
+    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
+    &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Alejandro/Documents/Universidades/Unibague/Semestres/2025B/repoSemestre/tareas/talleres_devops/taller_devops_03/repoBlueFly&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;show.migrate.to.gradle.popup&quot;: &quot;false&quot;,
+    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -71,6 +99,7 @@
       <option name="presentableId" value="Default" />
       <updated>1762756717517</updated>
       <workItem from="1762756718717" duration="642000" />
+      <workItem from="1762816779184" duration="708000" />
     </task>
     <servers />
   </component>

@@ -17,7 +17,7 @@ async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(s
         # 2. Convertir el ID a entero:
         user_id_int = int(user_id_str)
     except ValueError:
-        # Si el token tiene un 'sub' que no es un número
+        # Si el token tiene un 'sub' que no es un número:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Token inválido (ID de usuario no válido)"
