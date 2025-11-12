@@ -1,20 +1,34 @@
 # FlyBlue Backend API
 
-Sistema de gestión de vuelos desarrollado con FastAPI, PostgreSQL y autenticación JWT.
+
+Sistema de gestión de vuelos desarrollado con FastAPI (modo asíncrono), PostgreSQL y autenticación JWT. Este proyecto está completamente automatizado con un flujo **CI/CD** usando **Azure DevOps**, desplegando en **Azure App Service para Contenedores**.
 
 ## 🚀 Características
 
-- **Autenticación JWT** completa con roles de usuario
-- **Gestión de vuelos** (búsqueda, reservas, pagos)
-- **Panel de administración** para gestionar ciudades, vuelos y equipajes
-- **Base de datos PostgreSQL** con Docker
-- **Documentación automática** con Swagger/OpenAPI
+- **Autenticación JWT** completa con roles de usuario (cliente y admin).
+- **Gestión de vuelos** (búsqueda, reservas, pagos).
+- **Panel de administración** para gestionar ciudades, vuelos y equipajes.
+- **Base de datos PostgreSQL** (lista para usarse con Docker).
+- **Documentación automática** (Swagger/OpenAPI) disponible en `/docs`.
+- **CI/CD Automatizado** con Azure DevOps.
+- **Despliegue multi-entorno** (Dev, Test, Prod).
+
+## ☁️ Entornos Desplegados
+
+El pipeline de CI/CD despliega automáticamente en los siguientes entornos basados en la rama de Git:
+
+| Entorno | Rama de Git | URL Base de la API |
+| :--- | :--- | :--- |
+| **Desarrollo** | `develop` | `https://flyblue-api-server-dev.azurewebsites.net` |
+| **Pruebas** | `test` | `https://flyblue-api-server-test.azurewebsites.net` |
+| **Producción** | `main` | `https://flyblue-api-server-main.azurewebsites.net` |
 
 ## 📋 Requisitos
 
-- Docker y Docker Compose
-- Python 3.11+ (para desarrollo local)
+- Docker y Docker Compose (para desarrollo local)
+- Python 3.11+ (para desarrollo local sin Docker)
 - PostgreSQL (incluido en Docker)
+
 
 ## ⚙️ Instalación y Configuración
 
@@ -24,9 +38,9 @@ git clone https://github.com/SantiagoManchola/FlyBlue-Backend.git
 cd FlyBlue-Backend
 ```
 
-### 2. Configurar variables de entorno
+### 2. Configurar variables de entorno (archivo .env)
 ```bash
-# Copiar archivo de ejemplo
+# Ajustar archivo .env (quitarle el .example y cambiar valores)
 cp .env.example .env
 
 # Editar .env con tus valores (opcional, los valores por defecto funcionan)
