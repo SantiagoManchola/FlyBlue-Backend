@@ -18,10 +18,10 @@ Sistema de gestión de vuelos desarrollado con FastAPI (modo asíncrono), Postgr
 El pipeline de CI/CD despliega automáticamente en los siguientes entornos basados en la rama de Git:
 
 | Entorno | Rama de Git | URL Base de la API                                                                                     |
-| :--- | :--- |:-------------------------------------------------------------------------------------------------------|
-| **Desarrollo** | `develop` | `flyblue-api-server-dev-g0a8bsfaethdehe0.canadacentral-01.azurewebsites.net`                           |
-| **Pruebas** | `test` | `flyblue-api-server-test-gaheeyd2e7hybwau.canadacentral-01.azurewebsites.net`                                                                                                     |
-| **Producción** | `main` | `flyblue-api-server-main-hzdma8gyhudag8bq.canadacentral-01.azurewebsites.net`                          |
+| :--- |:------------|:-------------------------------------------------------------------------------------------------------|
+| **Desarrollo** | `dev`       | `flyblue-api-server-dev-g0a8bsfaethdehe0.canadacentral-01.azurewebsites.net`                           |
+| **Pruebas** | `test`      | `flyblue-api-server-test-gaheeyd2e7hybwau.canadacentral-01.azurewebsites.net`                                                                                                     |
+| **Producción** | `main`      | `flyblue-api-server-main-hzdma8gyhudag8bq.canadacentral-01.azurewebsites.net`                          |
 
 ## 📋 Requisitos
 
