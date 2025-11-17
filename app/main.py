@@ -33,4 +33,4 @@ def read_root():
 
 @app.get("/qwert")
 def read_root():
-    return {"mensaje": "flujo CI/CD 100% funcioanl", "status": "200"}
+    return {"mensaje": "flujo CI/CD 100% funcioanl OSTOS", "status": "200"}
