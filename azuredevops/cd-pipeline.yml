@@ -2,7 +2,7 @@ trigger: none # Este pipeline no se dispara por commits, sino por el CI
 
 resources:
   pipelines:
-    - pipeline: ci-pipeline # Alias interno para el recurso
+    - pipeline: ci-pipeline # Alias interno 
       source: 'flyblue-ci-pipeline-gh'
       trigger:
         branches: # Se dispara cuando el CI termine en cualquiera de estas ramas
@@ -27,7 +27,7 @@ stages:
     dependsOn: [] # Se ejecuta tan pronto como el CI termina
 
     # --- CONDICIÓN: Solo se ejecuta si la rama que disparó el CI fue 'dev' ---
-    condition: eq(variables['Build.SourceBranchName'], 'dev') 
+    condition: eq(variables['Build.SourceBranchName'], 'dev')
 
     jobs:
       - deployment: DeployDev
