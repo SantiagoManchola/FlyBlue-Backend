@@ -60,8 +60,8 @@ async def crear_vuelo(vuelo: VueloCreate, db: AsyncSession = Depends(get_db), cu
         codigo=codigo,
         id_origen=vuelo.id_origen,
         id_destino=vuelo.id_destino,
-        fecha_salida=vuelo.fecha_salida.replace(tzinfo=None),
-        fecha_llegada=vuelo.fecha_llegada.replace(tzinfo=None),
+        fecha_salida=vuelo.fecha_salida,
+        fecha_llegada=vuelo.fecha_llegada,
         precio_base=vuelo.precio_base
     )
     db.add(nuevo_vuelo)

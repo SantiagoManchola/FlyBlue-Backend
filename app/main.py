@@ -4,7 +4,7 @@ from app.database import engine
 from app.models import Base
 from app.routers import api_v1
 from contextlib import asynccontextmanager
-#test
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # Al iniciar: Conectar y crear tablas
@@ -30,4 +30,3 @@ app.include_router(api_v1)
 @app.get("/")
 def read_root():
     return {"mensaje": "API de FlyBlue está activa", "status": "200"}
-

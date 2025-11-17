@@ -1,6 +1,6 @@
 from sqlalchemy import (Column,Integer,String,Boolean,DateTime,DECIMAL,ForeignKey,CheckConstraint)
 from sqlalchemy.orm import relationship
-from database import Base
+from app.database import Base
 
 
 # 1️⃣ USUARIO
