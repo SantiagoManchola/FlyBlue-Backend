@@ -31,6 +31,7 @@
       <change beforePath="$PROJECT_DIR$/../../../../MachineLearning/us-shein-underwear_and_sleepwear-4019.csv" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../../../../MachineLearning/us-shein-womens_clothing-4620.csv" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -174,7 +175,7 @@
       <workItem from="1763158473444" duration="2625000" />
       <workItem from="1763387190772" duration="1214000" />
       <workItem from="1763391282833" duration="1646000" />
-      <workItem from="1763398029471" duration="2165000" />
+      <workItem from="1763398029471" duration="3601000" />
     </task>
     <servers />
   </component>

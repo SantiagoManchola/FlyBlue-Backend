@@ -1,8 +1,8 @@
 from fastapi import FastAPI
 from sqlalchemy.ext.asyncio import AsyncSession
-from database import engine
-from models import Base
-from routers import api_v1
+from app.database import engine
+from app.models import Base
+from app.routers import api_v1
 from contextlib import asynccontextmanager
 
 @asynccontextmanager
