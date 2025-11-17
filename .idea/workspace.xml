@@ -31,7 +31,6 @@
       <change beforePath="$PROJECT_DIR$/../../../../MachineLearning/us-shein-underwear_and_sleepwear-4019.csv" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../../../../MachineLearning/us-shein-womens_clothing-4620.csv" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/routers/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routers/admin.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,6 +52,10 @@
     &quot;accountId&quot;: &quot;a372e701-d31b-4d16-ac35-596ca78a6ce9&quot;
   }
 }</component>
+  <component name="KubernetesApiPersistence"><![CDATA[{}]]></component>
+  <component name="KubernetesApiProvider"><![CDATA[{
+  "isMigrated": true
+}]]></component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 6
 }</component>
@@ -168,7 +171,7 @@
       <workItem from="1762756718717" duration="642000" />
       <workItem from="1762816779184" duration="708000" />
       <workItem from="1763158473444" duration="2625000" />
-      <workItem from="1763387190772" duration="106000" />
+      <workItem from="1763387190772" duration="1214000" />
     </task>
     <servers />
   </component>
