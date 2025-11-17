@@ -3,7 +3,7 @@ trigger: none
 resources:
   pipelines:
     - pipeline: ci-pipeline
-      source: 'ci-pipeline-flyblue-backend.yml'
+      source: 'ci-pipeline-flyblue-backend'
       trigger:
         branches:
           include:
