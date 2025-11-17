@@ -1,13 +1,13 @@
-trigger: none # Este pipeline no se dispara por commits, sino por el CI
+trigger: none # Correcto, no se dispara por commits
 
 resources:
   pipelines:
-    - pipeline: ci-pipeline # Alias interno
-      source: 'flyblue-ci-pipeline-backend-gh'
+    - pipeline: ci-pipeline # Este es el 'alias'
+      source: 'flyblue-ci-pipeline-backend-gh' # Asegúrate que este nombre sea EXACTO
       trigger:
-        branches: # Se dispara cuando el CI termine en cualquiera de estas ramas
+        branches: # Se dispara si el CI termine en cualquiera de estas ramas
           include:
-            - dev   
+            - dev
             - test
             - main
 
@@ -15,7 +15,7 @@ pool:
   vmImage: 'ubuntu-latest'
 
 variables:
-  imageRepository: 'daldeoscoder/flyblue-api' # El repo de Docker
+  imageRepository: 'daldeoscoder/flyblue-api'
 
 stages:
 
@@ -24,16 +24,17 @@ stages:
   # ==========================================
   - stage: Deploy_Dev
     displayName: 'Deploy to DEVELOPMENT'
-    dependsOn: [] # Se ejecuta tan pronto como el CI termina
+    dependsOn: []
 
-    # --- CONDICIÓN: Solo se ejecuta si la rama que disparó el CI fue 'dev' ---
-    condition: eq(variables['Build.SourceBranchName'], 'dev')
+    # --- CORRECCIÓN DE CONDICIÓN ---
+    # Esta variable SÍ lee la rama del pipeline de CI que lo disparó
+    condition: eq(variables['resources.pipeline.ci-pipeline.sourceBranch'], 'refs/heads/dev')
 
     jobs:
       - deployment: DeployDev
-        environment: 'Development' # <-- Nombre del entorno gráfico en DevOps
+        environment: 'Development'
         variables:
-          - group: 'VG-FLYBLUE-DEV' # Carga los secretos para DEV
+          - group: 'VG-FLYBLUE-DEV'
         strategy:
           runOnce:
             deploy:
@@ -41,7 +42,7 @@ stages:
                 - task: AzureCLI@2
                   displayName: 'Set DEV Env Variables & Restart'
                   inputs:
-                    azureSubscription: 'SC-ARM-FLYBLUE-DEV' # Service Connection directa
+                    azureSubscription: 'SC-ARM-FLYBLUE-DEV'
                     scriptType: 'bash'
                     scriptLocation: 'inlineScript'
                     inlineScript: |
@@ -51,26 +52,25 @@ stages:
                 - task: AzureWebAppContainer@1
                   displayName: 'Deploy Container to DEV Web App'
                   inputs:
-                    azureSubscription: 'SC-ARM-FLYBLUE-DEV' # Service Connection directa
+                    azureSubscription: 'SC-ARM-FLYBLUE-DEV'
                     appName: 'flyblue-api-server-dev'
-                    # --- Despliega la imagen etiquetada como "dev" ---
-                    containers: '$(imageRepository):dev' 
+                    containers: '$(imageRepository):dev' # <-- Despliega el tag "dev"
 
   # ==========================================
-  # ETAPA 2: DESPLIEGUE A "TEST" (Esta etapa estaba BIEN)
+  # ETAPA 2: DESPLIEGUE A "TEST"
   # ==========================================
   - stage: Deploy_Test
     displayName: 'Deploy to TESTING'
     dependsOn: []
 
-    # --- CONDICIÓN: Solo se ejecuta si la rama fue 'test' ---
-    condition: eq(variables['Build.SourceBranchName'], 'test')
+    # --- CORRECCIÓN DE CONDICIÓN ---
+    condition: eq(variables['resources.pipeline.ci-pipeline.sourceBranch'], 'refs/heads/test')
 
     jobs:
       - deployment: DeployTest
-        environment: 'Testing' # Entorno gráfico de DevOps
+        environment: 'Testing'
         variables:
-          - group: 'VG-FLYBLUE-TEST' # Carga los secretos para TEST
+          - group: 'VG-FLYBLUE-TEST'
         strategy:
           runOnce:
             deploy:
@@ -78,7 +78,7 @@ stages:
                 - task: AzureCLI@2
                   displayName: 'Set TEST Env Variables & Restart'
                   inputs:
-                    azureSubscription: 'SC-ARM-FLYBLUE-TEST' # Service Connection directa
+                    azureSubscription: 'SC-ARM-FLYBLUE-TEST'
                     scriptType: 'bash'
                     scriptLocation: 'inlineScript'
                     inlineScript: |
@@ -88,25 +88,25 @@ stages:
                 - task: AzureWebAppContainer@1
                   displayName: 'Deploy Container to TEST Web App'
                   inputs:
-                    azureSubscription: 'SC-ARM-FLYBLUE-TEST' # Service Connection directa
+                    azureSubscription: 'SC-ARM-FLYBLUE-TEST'
                     appName: 'flyblue-api-server-test'
-                    containers: '$(imageRepository):test'
+                    containers: '$(imageRepository):test' # <-- Despliega el tag "test"
 
   # ==========================================
-  # ETAPA 3: DESPLIEGUE A "PROD" (Esta etapa estaba BIEN)
+  # ETAPA 3: DESPLIEGUE A "PROD"
   # ==========================================
   - stage: Deploy_Prod
     displayName: 'Deploy to PRODUCTION'
     dependsOn: []
 
-    # --- CONDICIÓN: Solo se ejecuta si la rama fue 'main' ---
-    condition: eq(variables['Build.SourceBranchName'], 'main')
+    # --- CORRECCIÓN DE CONDICIÓN ---
+    condition: eq(variables['resources.pipeline.ci-pipeline.sourceBranch'], 'refs/heads/main')
 
     jobs:
       - deployment: DeployProd
-        environment: 'Production' # <-- Aquí se configura la Aprobación Manual en la GUI
+        environment: 'Production'
         variables:
-          - group: 'VG-FLYBLUE-MAIN' # Carga los secretos para PROD
+          - group: 'VG-FLYBLUE-MAIN'
         strategy:
           runOnce:
             deploy:
@@ -114,7 +114,7 @@ stages:
                 - task: AzureCLI@2
                   displayName: 'Set PROD Env Variables & Restart'
                   inputs:
-                    azureSubscription: 'SC-ARM-FLYBLUE-MAIN' # Service Connection directa
+                    azureSubscription: 'SC-ARM-FLYBLUE-MAIN'
                     scriptType: 'bash'
                     scriptLocation: 'inlineScript'
                     inlineScript: |
@@ -124,6 +124,6 @@ stages:
                 - task: AzureWebAppContainer@1
                   displayName: 'Deploy Container to PROD Web App'
                   inputs:
-                    azureSubscription: 'SC-ARM-FLYBLUE-MAIN' # Service Connection directa
+                    azureSubscription: 'SC-ARM-FLYBLUE-MAIN'
                     appName: 'flyblue-api-server-main'
-                    containers: '$(imageRepository):main'
+                    containers: '$(imageRepository):main' # <-- Despliega el tag "main"
