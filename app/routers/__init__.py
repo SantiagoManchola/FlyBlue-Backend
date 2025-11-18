@@ -25,8 +25,8 @@ async def obtener_vuelo_por_id(id_vuelo: int, db: AsyncSession = Depends(get_db)
     if not vuelo:
         raise HTTPException(status_code=404, detail="Vuelo no encontrado")
 
-    asientos_totales = await crud.count_total_asientos(db, id_vuelo=id_vuelo)
-    asientos_disponibles = await crud.count_asientos_disponibles(db, id_vuelo=id_vuelo)
+    asientos_totales = await crud.count_total_asientos(db, vuelo_id=id_vuelo)
+    asientos_disponibles = await crud.count_asientos_disponibles(db, vuelo_id=id_vuelo)
 
     return VueloResponse(
         id=vuelo.id_vuelo,
