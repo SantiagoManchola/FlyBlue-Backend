@@ -4,7 +4,7 @@ from app.database import engine
 from app.models import Base
 from app.routers import api_v1
 from contextlib import asynccontextmanager
-
+from fastapi.middleware.cors import CORSMiddleware
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # Al iniciar: Conectar y crear tablas
@@ -22,6 +22,18 @@ app = FastAPI(
     version="1.0.0",
     description="API asíncrona para gestionar reservas de vuelos.",
     lifespan=lifespan
+)
+
+origins = [
+    "*"
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,       # Permite todos los orígenes
+    allow_credentials=True,    # Permite cookies/autenticación
+    allow_methods=["*"],         # Permite todos los métodos (GET, POST, PUT, etc.)
+    allow_headers=["*"],         # Permite todos los encabezados (incluyendo Authorization)
 )
 
 # Incluir todos los routers de /v1
