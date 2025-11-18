@@ -1,17 +1,23 @@
+# app/crud.py
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from sqlalchemy.orm import selectinload
 from sqlalchemy.sql import func
-from app import models, schemas
-from app.utils.security import hash_password
 from datetime import datetime, timedelta
 from typing import Optional
 
+# Imports correctos (absolutos)
+from app import models, schemas
+from app.utils.security import hash_password
 
 # --- Funciones de Auth ---
 
 async def get_user_by_email(db: AsyncSession, email: str):
     result = await db.execute(select(models.Usuario).filter(models.Usuario.correo == email))
+    return result.scalar_one_or_none()
+
+async def get_user_by_id(db: AsyncSession, user_id: int):
+    result = await db.execute(select(models.Usuario).filter(models.Usuario.id_usuario == user_id))
     return result.scalar_one_or_none()
 
 async def create_user(db: AsyncSession, usuario: schemas.UsuarioCreate):
@@ -26,9 +32,7 @@ async def create_user(db: AsyncSession, usuario: schemas.UsuarioCreate):
     await db.commit()
     await db.refresh(nuevo_usuario)
     return nuevo_usuario
-async def get_user_by_id(db: AsyncSession, user_id: int):
-    result = await db.execute(select(models.Usuario).filter(models.Usuario.id_usuario == user_id))
-    return result.scalar_one_or_none()
+
 # --- Funciones de Admin ---
 
 async def create_ciudad(db: AsyncSession, ciudad: schemas.CiudadCreate):
@@ -43,13 +47,20 @@ async def create_equipaje(db: AsyncSession, equipaje: schemas.EquipajeCreate):
     db.add(nuevo_equipaje)
     await db.commit()
     await db.refresh(nuevo_equipaje)
-    return nuevo_equipaje
+    return nueva_equipaje
 
 async def get_ciudad_by_id(db: AsyncSession, ciudad_id: int):
     result = await db.execute(select(models.Ciudad).filter(models.Ciudad.id_ciudad == ciudad_id))
     return result.scalar_one_or_none()
 
 async def create_vuelo(db: AsyncSession, vuelo: schemas.VueloCreate):
+    # Nota: El router ya procesa el objeto Vuelo con el código generado,
+    # así que aquí simplemente lo guardamos si viene como dict o como objeto.
+    # Para compatibilidad con tu router Admin actual que pasa un objeto models.Vuelo manualmente:
+    # Si recibes un objeto modelo directamente en el router, no llamas a esto.
+    # Si llamas a esto, asegúrate de pasar los datos correctos.
+    # Basado en tu admin.py anterior, tú creabas el objeto models.Vuelo manualmente.
+    # Esta función es para cuando pasas el schema.
     nuevo_vuelo = models.Vuelo(**vuelo.dict())
     db.add(nuevo_vuelo)
     await db.commit()
@@ -66,17 +77,19 @@ async def get_vuelo_by_id(db: AsyncSession, vuelo_id: int):
     )
     return result.scalar_one_or_none()
 
-async def count_total_asientos(db: AsyncSession, vuelo_id: int):
+# --- CORRECCIÓN AQUÍ: Cambiado 'vuelo_id' por 'id_vuelo' ---
+async def count_total_asientos(db: AsyncSession, id_vuelo: int):
     result = await db.execute(
         select(func.count(models.Asiento.id_asiento))
-        .filter(models.Asiento.id_vuelo == vuelo_id)
+        .filter(models.Asiento.id_vuelo == id_vuelo)
     )
     return result.scalar_one()
 
-async def count_asientos_disponibles(db: AsyncSession, vuelo_id: int):
+# --- CORRECCIÓN AQUÍ: Cambiado 'vuelo_id' por 'id_vuelo' ---
+async def count_asientos_disponibles(db: AsyncSession, id_vuelo: int):
     result = await db.execute(
         select(func.count(models.Asiento.id_asiento))
-        .filter(models.Asiento.id_vuelo == vuelo_id, models.Asiento.disponible == True)
+        .filter(models.Asiento.id_vuelo == id_vuelo, models.Asiento.disponible == True)
     )
     return result.scalar_one()
 
@@ -93,14 +106,13 @@ async def get_all_ciudades(db: AsyncSession):
     return result.scalars().all()
 
 async def search_vuelos(
-    db: AsyncSession, 
-    origen_id: Optional[int] = None, 
-    destino_id: Optional[int] = None, 
-    fecha: Optional[datetime] = None
+        db: AsyncSession,
+        origen_id: Optional[int] = None,
+        destino_id: Optional[int] = None,
+        fecha: Optional[datetime] = None
 ):
-   
     stmt = select(models.Vuelo)
-    
+
     if origen_id is not None:
         stmt = stmt.filter(models.Vuelo.id_origen == origen_id)
 
@@ -108,16 +120,14 @@ async def search_vuelos(
         stmt = stmt.filter(models.Vuelo.id_destino == destino_id)
 
     if fecha is not None:
-        
         fecha_inicio = fecha.date()
         fecha_fin = fecha_inicio + timedelta(days=1)
-        
+
         stmt = stmt.filter(
             models.Vuelo.fecha_salida >= fecha_inicio,
             models.Vuelo.fecha_salida < fecha_fin
         )
 
-    
     result = await db.execute(stmt)
     return result.scalars().all()
 
@@ -130,7 +140,6 @@ async def get_equipaje_by_id(db: AsyncSession, equipaje_id: int):
     return result.scalar_one_or_none()
 
 async def create_reserva(db: AsyncSession, reserva: schemas.ReservaRequest, total: float):
-    # Marcar asiento como no disponible
     asiento = await get_asiento_by_id(db, reserva.id_asiento)
     if asiento:
         asiento.disponible = False
