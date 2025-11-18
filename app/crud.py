@@ -47,7 +47,7 @@ async def create_equipaje(db: AsyncSession, equipaje: schemas.EquipajeCreate):
     db.add(nuevo_equipaje)
     await db.commit()
     await db.refresh(nuevo_equipaje)
-    return nueva_equipaje
+    return nuevo_equipaje
 
 async def get_ciudad_by_id(db: AsyncSession, ciudad_id: int):
     result = await db.execute(select(models.Ciudad).filter(models.Ciudad.id_ciudad == ciudad_id))
@@ -85,6 +85,13 @@ async def count_total_asientos(db: AsyncSession, id_vuelo: int):
     )
     return result.scalar_one()
 
+async def get_asientos(db: AsyncSession):
+   
+    result = await db.execute(
+        select(models.Asiento)
+    )
+    
+    return result.scalars().all()
 # --- CORRECCIÓN AQUÍ: Cambiado 'vuelo_id' por 'id_vuelo' ---
 async def count_asientos_disponibles(db: AsyncSession, id_vuelo: int):
     result = await db.execute(

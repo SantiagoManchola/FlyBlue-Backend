@@ -80,3 +80,17 @@ async def buscar_vuelos(
         fecha=fecha
     )
     return vuelos
+
+@api_v1.get("/asientos", response_model=AsientosResponse)
+async def obtener_asientos_vuelo(
+    
+    db: AsyncSession = Depends(get_db),
+    current_user: Usuario = Depends(require_user)
+):
+    
+    
+    result = await crud.get_asientos(db)
+    
+
+    
+    return {"asientos": result}
