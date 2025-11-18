@@ -5,6 +5,7 @@ from sqlalchemy.sql import func
 from app import models, schemas
 from app.utils.security import hash_password
 from datetime import datetime, timedelta
+from typing import Optional
 
 
 # --- Funciones de Auth ---
@@ -91,19 +92,33 @@ async def get_all_ciudades(db: AsyncSession):
     result = await db.execute(select(models.Ciudad))
     return result.scalars().all()
 
-async def search_vuelos(db: AsyncSession, origen_id: int, destino_id: int, fecha: datetime):
-    fecha_inicio = fecha.date()
-    fecha_fin = fecha_inicio + timedelta(days=1)
+async def search_vuelos(
+    db: AsyncSession, 
+    origen_id: Optional[int] = None, 
+    destino_id: Optional[int] = None, 
+    fecha: Optional[datetime] = None
+):
+   
+    stmt = select(models.Vuelo)
+    
+    if origen_id is not None:
+        stmt = stmt.filter(models.Vuelo.id_origen == origen_id)
 
-    result = await db.execute(
-        select(models.Vuelo)
-        .filter(
-            models.Vuelo.id_origen == origen_id,
-            models.Vuelo.id_destino == destino_id,
+    if destino_id is not None:
+        stmt = stmt.filter(models.Vuelo.id_destino == destino_id)
+
+    if fecha is not None:
+        
+        fecha_inicio = fecha.date()
+        fecha_fin = fecha_inicio + timedelta(days=1)
+        
+        stmt = stmt.filter(
             models.Vuelo.fecha_salida >= fecha_inicio,
             models.Vuelo.fecha_salida < fecha_fin
         )
-    )
+
+    
+    result = await db.execute(stmt)
     return result.scalars().all()
 
 async def get_asiento_by_id(db: AsyncSession, asiento_id: int):
