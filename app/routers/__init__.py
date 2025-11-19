@@ -6,6 +6,7 @@ from app.schemas import VueloResponse, AsientosResponse, EquipajeResponse, Ciuda
 from app.security import require_user
 from datetime import datetime
 from app import crud
+from typing import Optional, List
 
 from app.routers import admin, cliente, auth
 
@@ -62,13 +63,34 @@ async def obtener_ciudades(db: AsyncSession = Depends(get_db), current_user: Usu
         raise HTTPException(status_code=404, detail="No se encontraron ciudades")
     return ciudades
 
-@api_v1.get("/vuelos", response_model=list[VueloBusquedaResponse])
+@api_v1.get("/vuelos", response_model=List[VueloBusquedaResponse])
 async def buscar_vuelos(
-        origen: int = Query(..., description="ID de la ciudad de origen"),
-        destino: int = Query(..., description="ID de la ciudad de destino"),
-        fecha: datetime = Query(..., description="Fecha de salida (YYYY-MM-DD)"),
+        origen: Optional[int] = Query(None, description="ID de la ciudad de origen"),
+        destino: Optional[int] = Query(None, description="ID de la ciudad de destino"),
+        fecha: Optional[datetime] = Query(None, description="Fecha de salida (YYYY-MM-DD)"), # Sugiero usar 'date' si solo buscas por día
         db: AsyncSession = Depends(get_db),
         current_user: Usuario = Depends(require_user)
 ):
-    vuelos = await crud.search_vuelos(db, origen_id=origen, destino_id=destino, fecha=fecha)
+    
+    
+    vuelos = await crud.search_vuelos(
+        db, 
+        origen_id=origen, 
+        destino_id=destino, 
+        fecha=fecha
+    )
     return vuelos
+
+@api_v1.get("/asientos", response_model=AsientosResponse)
+async def obtener_asientos_vuelo(
+    
+    db: AsyncSession = Depends(get_db),
+    current_user: Usuario = Depends(require_user)
+):
+    
+    
+    result = await crud.get_asientos(db)
+    
+
+    
+    return {"asientos": result}

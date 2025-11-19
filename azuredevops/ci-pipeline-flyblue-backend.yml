@@ -1,7 +1,7 @@
 trigger:
   branches:
     include:
-      - develop # Rama para Dev
+      - dev     # Rama para Dev
       - test    # Rama para Test
       - main    # Rama para Prod
 

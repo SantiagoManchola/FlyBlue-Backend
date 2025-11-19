@@ -1,0 +1,128 @@
+trigger: none
+
+resources:
+  pipelines:
+    - pipeline: ci-pipeline
+      source: 'ci-pipeline-flyblue-backend'
+      trigger:
+        branches:
+          include:
+            - dev
+            - test
+            - main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  imageRepository: 'daldeoscoder/flyblue-api'
+
+stages:
+
+  # ==========================================
+  # ETAPA 1: DESPLIEGUE A "DEV"
+  # ==========================================
+  - stage: Deploy_Dev
+    displayName: 'Deploy to DEVELOPMENT'
+    dependsOn: [ ]
+
+
+    condition: and(succeeded(), eq(variables['resources.pipeline.ci-pipeline.sourceBranch'], 'refs/heads/dev'))
+
+    jobs:
+      - deployment: DeployDev
+        environment: 'Development'
+        variables:
+          - group: 'VG-FLYBLUE-DEV'
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - task: AzureCLI@2
+                  displayName: 'Set DEV Env Variables & Restart'
+                  inputs:
+                    azureSubscription: 'SC-ARM-FLYBLUE-DEV'
+                    scriptType: 'bash'
+                    scriptLocation: 'inlineScript'
+                    inlineScript: |
+                      az webapp config appsettings set -n 'flyblue-api-server-dev' -g 'RG-FLYBLUE-DEV' --settings DATABASE_URL="$(DATABASE_URL)" WEBSITES_PORT="8000"
+                      az webapp restart -n 'flyblue-api-server-dev' -g 'RG-FLYBLUE-DEV'
+
+                - task: AzureWebAppContainer@1
+                  displayName: 'Deploy Container to DEV Web App'
+                  inputs:
+                    azureSubscription: 'SC-ARM-FLYBLUE-DEV'
+                    appName: 'flyblue-api-server-dev'
+                    containers: '$(imageRepository):dev'
+
+  # ==========================================
+  # ETAPA 2: DESPLIEGUE A "TEST"
+  # ==========================================
+  - stage: Deploy_Test
+    displayName: 'Deploy to TESTING'
+    dependsOn: [ ]
+
+
+    condition: and(succeeded(), eq(variables['resources.pipeline.ci-pipeline.sourceBranch'], 'refs/heads/test'))
+
+    jobs:
+      - deployment: DeployTest
+        environment: 'Testing'
+        variables:
+          - group: 'VG-FLYBLUE-TEST'
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - task: AzureCLI@2
+                  displayName: 'Set TEST Env Variables & Restart'
+                  inputs:
+                    azureSubscription: 'SC-ARM-FLYBLUE-TEST'
+                    scriptType: 'bash'
+                    scriptLocation: 'inlineScript'
+                    inlineScript: |
+                      az webapp config appsettings set -n 'flyblue-api-server-test' -g 'RG-FLYBLUE-TEST' --settings DATABASE_URL="$(DATABASE_URL)" WEBSITES_PORT="8000"
+                      az webapp restart -n 'flyblue-api-server-test' -g 'RG-FLYBLUE-TEST'
+
+                - task: AzureWebAppContainer@1
+                  displayName: 'Deploy Container to TEST Web App'
+                  inputs:
+                    azureSubscription: 'SC-ARM-FLYBLUE-TEST'
+                    appName: 'flyblue-api-server-test'
+                    containers: '$(imageRepository):test'
+
+  # ==========================================
+  # ETAPA 3: DESPLIEGUE A "PROD"
+  # ==========================================
+  - stage: Deploy_Prod
+    displayName: 'Deploy to PRODUCTION'
+    dependsOn: [ ]
+
+
+    condition: and(succeeded(), eq(variables['resources.pipeline.ci-pipeline.sourceBranch'], 'refs/heads/main'))
+
+    jobs:
+      - deployment: DeployProd
+        environment: 'Production'
+        variables:
+          - group: 'VG-FLYBLUE-MAIN'
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - task: AzureCLI@2
+                  displayName: 'Set PROD Env Variables & Restart'
+                  inputs:
+                    azureSubscription: 'SC-ARM-FLYBLUE-MAIN'
+                    scriptType: 'bash'
+                    scriptLocation: 'inlineScript'
+                    inlineScript: |
+                      az webapp config appsettings set -n 'flyblue-api-server-main' -g 'RG-FLYBLUE-MAIN' --settings DATABASE_URL="$(DATABASE_URL)" WEBSITES_PORT="8000"
+                      az webapp restart -n 'flyblue-api-server-main' -g 'RG-FLYBLUE-MAIN'
+
+                - task: AzureWebAppContainer@1
+                  displayName: 'Deploy Container to PROD Web App'
+                  inputs:
+                    azureSubscription: 'SC-ARM-FLYBLUE-MAIN'
+                    appName: 'flyblue-api-server-main'
+                    containers: '$(imageRepository):main'
