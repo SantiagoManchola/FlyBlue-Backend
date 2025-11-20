@@ -8,7 +8,6 @@
       <change afterPath="$PROJECT_DIR$/../../../../MachineLearning/ProyectoFinal/EFIpynb/.idea/misc.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../../../../MachineLearning/ProyectoFinal/EFIpynb/.idea/vcs.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../../../../MachineLearning/SegundaEntrega/segunda_entrega_IA/segunda_entrega_IA.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/azuredevops/cd-pipeline-flyblue-backend.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../../../MachineLearning/dirty_cafe_sales.csv" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../../../../MachineLearning/us-shein-appliances-3987.csv" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../../../../MachineLearning/us-shein-automotive-4110.csv" beforeDir="false" />
@@ -31,18 +30,7 @@
       <change beforePath="$PROJECT_DIR$/../../../../MachineLearning/us-shein-toys_and_games-3577.csv" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../../../../MachineLearning/us-shein-underwear_and_sleepwear-4019.csv" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../../../../MachineLearning/us-shein-womens_clothing-4620.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.env.example" beforeDir="false" afterPath="$PROJECT_DIR$/.env.example" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/crud.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/crud.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/routers/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routers/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/routers/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routers/admin.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/azuredevops/cd-pipeline.yml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/azuredevops/ci-pipeline.yml" beforeDir="false" afterPath="$PROJECT_DIR$/azuredevops/ci-pipeline-flyblue-backend.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/readme.md" beforeDir="false" afterPath="$PROJECT_DIR$/readme.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -82,7 +70,7 @@
     "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultAutoModeForALLUsers.v1": "true",
     "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
     "dart.analysis.tool.window.visible": "false",
-    "git-widget-placeholder": "Merging test",
+    "git-widget-placeholder": "test",
     "junie.onboarding.icon.badge.shown": "true",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/Alejandro/Documents/Universidades/Unibague/Semestres/2025B/repoSemestre/tareas/talleres_devops/taller_devops_03/repoBlueFly",
@@ -189,5 +177,15 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/app/routers/admin.py</url>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
