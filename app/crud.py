@@ -178,6 +178,7 @@ async def get_reservas_by_user_id(db: AsyncSession, usuario_id: int):
 async def get_reserva_by_id_and_user(db: AsyncSession, reserva_id: int, usuario_id: int):
     result = await db.execute(
         select(models.Reserva)
+        .options(selectinload(models.Reserva.pago))
         .filter(
             models.Reserva.id_reserva == reserva_id,
             models.Reserva.id_usuario == usuario_id
